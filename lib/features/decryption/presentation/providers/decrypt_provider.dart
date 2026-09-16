@@ -29,34 +29,49 @@ class DecryptProvider extends ChangeNotifier {
 
   DecryptStatus get status => _status;
 
-  Uint8List? get selectedImageBytes => _selectedImageBytes;
+  Uint8List? get selectedImageBytes =>
+      _selectedImageBytes;
 
-  String? get selectedFileName => _selectedFileName;
+  String? get selectedFileName =>
+      _selectedFileName;
 
   String? get payload => _payload;
 
-  String? get decryptedText => _decryptedText;
+  String? get decryptedText =>
+      _decryptedText;
 
-  String? get savedPath => _savedPath;
+  String? get savedPath =>
+      _savedPath;
 
-  String? get errorMessage => _errorMessage;
+  String? get errorMessage =>
+      _errorMessage;
 
   bool get isBusy {
-    return _status == DecryptStatus.selectingImage ||
-        _status == DecryptStatus.extracting ||
-        _status == DecryptStatus.decrypting ||
-        _status == DecryptStatus.copying ||
-        _status == DecryptStatus.saving ||
-        _status == DecryptStatus.sharing;
+    return _status ==
+            DecryptStatus.selectingImage ||
+        _status ==
+            DecryptStatus.extracting ||
+        _status ==
+            DecryptStatus.decrypting ||
+        _status ==
+            DecryptStatus.copying ||
+        _status ==
+            DecryptStatus.saving ||
+        _status ==
+            DecryptStatus.sharing;
   }
 
-  bool get hasImage => _selectedImageBytes != null;
+  bool get hasImage =>
+      _selectedImageBytes != null;
 
-  bool get hasDecryptedText => _decryptedText != null;
+  bool get hasDecryptedText =>
+      _decryptedText != null;
 
   void setSelectingImage() {
-    _status = DecryptStatus.selectingImage;
+    _status =
+        DecryptStatus.selectingImage;
     _errorMessage = null;
+
     notifyListeners();
   }
 
@@ -78,20 +93,25 @@ class DecryptProvider extends ChangeNotifier {
   }
 
   void setExtracting() {
-    _status = DecryptStatus.extracting;
+    _status =
+        DecryptStatus.extracting;
     _errorMessage = null;
+
     notifyListeners();
   }
 
   void setPayload(String payload) {
     _payload = payload;
     _errorMessage = null;
+
     notifyListeners();
   }
 
   void setDecrypting() {
-    _status = DecryptStatus.decrypting;
+    _status =
+        DecryptStatus.decrypting;
     _errorMessage = null;
+
     notifyListeners();
   }
 
@@ -105,20 +125,26 @@ class DecryptProvider extends ChangeNotifier {
   }
 
   void setCopying() {
-    _status = DecryptStatus.copying;
+    _status =
+        DecryptStatus.copying;
     _errorMessage = null;
+
     notifyListeners();
   }
 
   void setSaving() {
-    _status = DecryptStatus.saving;
+    _status =
+        DecryptStatus.saving;
     _errorMessage = null;
+
     notifyListeners();
   }
 
   void setSharing() {
-    _status = DecryptStatus.sharing;
+    _status =
+        DecryptStatus.sharing;
     _errorMessage = null;
+
     notifyListeners();
   }
 
@@ -132,9 +158,11 @@ class DecryptProvider extends ChangeNotifier {
 
   void restoreSuccess() {
     if (_decryptedText != null) {
-      _status = DecryptStatus.success;
+      _status =
+          DecryptStatus.success;
     } else {
-      _status = DecryptStatus.idle;
+      _status =
+          DecryptStatus.idle;
     }
 
     notifyListeners();
@@ -148,7 +176,8 @@ class DecryptProvider extends ChangeNotifier {
   }
 
   void reset() {
-    _status = DecryptStatus.idle;
+    _status =
+        DecryptStatus.idle;
 
     _selectedImageBytes = null;
     _selectedFileName = null;

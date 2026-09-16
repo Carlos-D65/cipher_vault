@@ -10,4 +10,16 @@ abstract interface class FileStorageService {
     required String fileName,
     required Uint8List bytes,
   });
+
+  Future<String> saveTextFileWithPicker({
+    required String fileName,
+    required String content,
+    required String mimeType,
+  });
+
+  Future<String> saveBytesFileWithPicker({
+    required String fileName,
+    required Uint8List bytes,
+    required String mimeType,
+  });
 }

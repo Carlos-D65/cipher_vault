@@ -15,19 +15,27 @@ class DecryptScreen extends StatefulWidget {
   });
 
   @override
-  State<DecryptScreen> createState() => _DecryptScreenState();
+  State<DecryptScreen> createState() =>
+      _DecryptScreenState();
 }
 
-class _DecryptScreenState extends State<DecryptScreen> {
-  late final TextEditingController _payloadController;
-  late final TextEditingController _passwordController;
+class _DecryptScreenState
+    extends State<DecryptScreen> {
+  late final TextEditingController
+      _payloadController;
+
+  late final TextEditingController
+      _passwordController;
 
   @override
   void initState() {
     super.initState();
 
-    _payloadController = TextEditingController();
-    _passwordController = TextEditingController();
+    _payloadController =
+        TextEditingController();
+
+    _passwordController =
+        TextEditingController();
   }
 
   @override
@@ -41,30 +49,38 @@ class _DecryptScreenState extends State<DecryptScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<DecryptProvider>.value(
-      value: widget.controller.provider,
+  Widget build(
+    BuildContext context,
+  ) {
+    return ChangeNotifierProvider<
+        DecryptProvider>.value(
+      value:
+          widget.controller.provider,
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        resizeToAvoidBottomInset: true,
-
+        backgroundColor:
+            AppColors.background,
+        resizeToAvoidBottomInset:
+            true,
         appBar: AppBar(
-          backgroundColor: AppColors.background,
+          backgroundColor:
+              AppColors.background,
           elevation: 0,
           title: const Text(
             'Decrypt',
             style: TextStyle(
               color: AppColors.text,
-              fontWeight: FontWeight.w700,
+              fontWeight:
+                  FontWeight.w700,
             ),
           ),
-          iconTheme: const IconThemeData(
+          iconTheme:
+              const IconThemeData(
             color: AppColors.text,
           ),
         ),
-
         body: SafeArea(
-          child: Consumer<DecryptProvider>(
+          child: Consumer<
+              DecryptProvider>(
             builder: (
               context,
               provider,
@@ -76,7 +92,8 @@ class _DecryptScreenState extends State<DecryptScreen> {
                   constraints,
                 ) {
                   final horizontalPadding =
-                      constraints.maxWidth < 360
+                      constraints.maxWidth <
+                              360
                           ? 16.0
                           : 20.0;
 
@@ -84,7 +101,8 @@ class _DecryptScreenState extends State<DecryptScreen> {
                     keyboardDismissBehavior:
                         ScrollViewKeyboardDismissBehavior
                             .onDrag,
-                    padding: EdgeInsets.fromLTRB(
+                    padding:
+                        EdgeInsets.fromLTRB(
                       horizontalPadding,
                       12,
                       horizontalPadding,
@@ -92,37 +110,79 @@ class _DecryptScreenState extends State<DecryptScreen> {
                     ),
                     child: Center(
                       child: ConstrainedBox(
-                        constraints: const BoxConstraints(
+                        constraints:
+                            const BoxConstraints(
                           maxWidth: 520,
                         ),
                         child: Column(
                           crossAxisAlignment:
-                              CrossAxisAlignment.stretch,
+                              CrossAxisAlignment
+                                  .stretch,
                           children: [
+                            const Text(
+                              'DECRYPT MESSAGE',
+                              style:
+                                  TextStyle(
+                                color:
+                                    AppColors.cyan,
+                                fontSize: 12,
+                                fontWeight:
+                                    FontWeight.w800,
+                                letterSpacing:
+                                    1.4,
+                              ),
+                            ),
+
+                            const SizedBox(
+                              height: 8,
+                            ),
+
+                            const Text(
+                              'Decrypt standard CVLT1 or advanced CVLT2 payloads.',
+                              style:
+                                  TextStyle(
+                                color:
+                                    AppColors.muted,
+                                fontSize: 14,
+                              ),
+                            ),
+
+                            const SizedBox(
+                              height: 24,
+                            ),
+
                             _buildImageSelector(
                               provider,
                             ),
 
-                            const SizedBox(height: 16),
+                            const SizedBox(
+                              height: 16,
+                            ),
 
                             _buildPayloadField(
                               provider,
                             ),
 
-                            const SizedBox(height: 16),
+                            const SizedBox(
+                              height: 16,
+                            ),
 
                             _buildPasswordField(
                               provider,
                             ),
 
-                            const SizedBox(height: 20),
+                            const SizedBox(
+                              height: 20,
+                            ),
 
                             _buildDecryptButton(
                               provider,
                             ),
 
                             if (provider.isBusy) ...[
-                              const SizedBox(height: 20),
+                              const SizedBox(
+                                height: 20,
+                              ),
                               const Center(
                                 child:
                                     CircularProgressIndicator(),
@@ -131,15 +191,20 @@ class _DecryptScreenState extends State<DecryptScreen> {
 
                             if (provider.errorMessage !=
                                 null) ...[
-                              const SizedBox(height: 20),
+                              const SizedBox(
+                                height: 20,
+                              ),
                               _buildError(
-                                provider.errorMessage!,
+                                provider
+                                    .errorMessage!,
                               ),
                             ],
 
                             if (provider.decryptedText !=
                                 null) ...[
-                              const SizedBox(height: 24),
+                              const SizedBox(
+                                height: 24,
+                              ),
                               _buildResult(
                                 provider,
                               ),
@@ -154,7 +219,6 @@ class _DecryptScreenState extends State<DecryptScreen> {
             },
           ),
         ),
-
         bottomNavigationBar:
             const CipherVaultBottomNavigation(
           currentIndex: 2,
@@ -174,18 +238,23 @@ class _DecryptScreenState extends State<DecryptScreen> {
           onPressed: provider.isBusy
               ? null
               : () async {
-                  await widget.controller.selectImage();
+                  await widget.controller
+                      .selectImage();
 
                   if (!mounted) {
                     return;
                   }
 
                   final payload =
-                      widget.controller.provider.payload;
+                      widget.controller
+                          .provider
+                          .payload;
 
                   if (payload != null &&
                       payload.isNotEmpty) {
-                    _payloadController.text = payload;
+                    _payloadController
+                            .text =
+                        payload;
                   }
                 },
           child: Text(
@@ -195,21 +264,30 @@ class _DecryptScreenState extends State<DecryptScreen> {
           ),
         ),
 
-        if (provider.selectedFileName != null) ...[
-          const SizedBox(height: 8),
+        if (provider.selectedFileName !=
+            null) ...[
+          const SizedBox(
+            height: 8,
+          ),
           Text(
             provider.selectedFileName!,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
+            textAlign:
+                TextAlign.center,
+            overflow:
+                TextOverflow.ellipsis,
             maxLines: 2,
-            style: const TextStyle(
-              color: AppColors.muted,
+            style:
+                const TextStyle(
+              color:
+                  AppColors.muted,
             ),
           ),
         ],
 
         if (provider.hasImage) ...[
-          const SizedBox(height: 12),
+          const SizedBox(
+            height: 12,
+          ),
 
           LayoutBuilder(
             builder: (
@@ -217,32 +295,44 @@ class _DecryptScreenState extends State<DecryptScreen> {
               constraints,
             ) {
               final imageHeight =
-                  constraints.maxWidth < 360
+                  constraints.maxWidth <
+                          360
                       ? 150.0
                       : 180.0;
 
               return SizedBox(
-                height: imageHeight,
-                width: double.infinity,
+                height:
+                    imageHeight,
+                width:
+                    double.infinity,
                 child: ClipRRect(
                   borderRadius:
-                      BorderRadius.circular(12),
-                  child: Image.memory(
-                    provider.selectedImageBytes!,
-                    fit: BoxFit.contain,
+                      BorderRadius
+                          .circular(
+                    12,
+                  ),
+                  child:
+                      Image.memory(
+                    provider
+                        .selectedImageBytes!,
+                    fit:
+                        BoxFit.contain,
                   ),
                 ),
               );
             },
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(
+            height: 12,
+          ),
 
           OutlinedButton(
             onPressed: provider.isBusy
                 ? null
                 : () async {
-                    await widget.controller
+                    await widget
+                        .controller
                         .extractFromImage();
 
                     if (!mounted) {
@@ -250,11 +340,14 @@ class _DecryptScreenState extends State<DecryptScreen> {
                     }
 
                     final payload =
-                        widget.controller.provider.payload;
+                        widget.controller
+                            .provider
+                            .payload;
 
                     if (payload != null &&
                         payload.isNotEmpty) {
-                      _payloadController.text =
+                      _payloadController
+                              .text =
                           payload;
                     }
                   },
@@ -271,19 +364,25 @@ class _DecryptScreenState extends State<DecryptScreen> {
     DecryptProvider provider,
   ) {
     return TextField(
-      controller: _payloadController,
-      enabled: !provider.isBusy,
+      controller:
+          _payloadController,
+      enabled:
+          !provider.isBusy,
       minLines: 4,
       maxLines: 8,
-      keyboardType: TextInputType.multiline,
+      keyboardType:
+          TextInputType.multiline,
       style: const TextStyle(
         color: AppColors.text,
       ),
-      decoration: const InputDecoration(
+      decoration:
+          const InputDecoration(
         labelText: 'Payload',
-        hintText: 'CVLT1....',
+        hintText:
+            'CVLT1... o CVLT2...',
       ),
-      onChanged: provider.setPayload,
+      onChanged:
+          provider.setPayload,
     );
   }
 
@@ -291,15 +390,19 @@ class _DecryptScreenState extends State<DecryptScreen> {
     DecryptProvider provider,
   ) {
     return TextField(
-      controller: _passwordController,
-      enabled: !provider.isBusy,
+      controller:
+          _passwordController,
+      enabled:
+          !provider.isBusy,
       obscureText: true,
       style: const TextStyle(
         color: AppColors.text,
       ),
-      decoration: const InputDecoration(
+      decoration:
+          const InputDecoration(
         labelText: 'Contraseña',
-        hintText: 'Introduce tu contraseña',
+        hintText:
+            'Introduce tu contraseña',
       ),
     );
   }
@@ -308,20 +411,43 @@ class _DecryptScreenState extends State<DecryptScreen> {
     DecryptProvider provider,
   ) {
     return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
+      width:
+          double.infinity,
+      child:
+          ElevatedButton(
         onPressed: provider.isBusy
             ? null
             : () async {
-                await widget.controller
+                FocusScope.of(
+                  context,
+                ).unfocus();
+
+                await widget
+                    .controller
                     .decryptPayloadText(
-                  payload: _payloadController.text,
-                  password: _passwordController.text,
+                  payload:
+                      _payloadController
+                          .text,
+                  password:
+                      _passwordController
+                          .text,
                 );
               },
-        child: const Text(
-          'DECRYPT',
-        ),
+        child:
+            provider.status ==
+                    DecryptStatus
+                        .decrypting
+                ? const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child:
+                        CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                    ),
+                  )
+                : const Text(
+                    'DECRYPT',
+                  ),
       ),
     );
   }
@@ -330,72 +456,107 @@ class _DecryptScreenState extends State<DecryptScreen> {
     DecryptProvider provider,
   ) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.border,
+      width:
+          double.infinity,
+      padding:
+          const EdgeInsets.all(16),
+      decoration:
+          BoxDecoration(
+        color:
+            AppColors.surface,
+        borderRadius:
+            BorderRadius.circular(
+          16,
+        ),
+        border:
+            Border.all(
+          color:
+              AppColors.border,
         ),
       ),
       child: Column(
         crossAxisAlignment:
-            CrossAxisAlignment.stretch,
+            CrossAxisAlignment
+                .stretch,
         children: [
           const Text(
             'MENSAJE DESCIFRADO',
-            style: TextStyle(
-              color: AppColors.green,
-              fontWeight: FontWeight.bold,
+            style:
+                TextStyle(
+              color:
+                  AppColors.green,
+              fontWeight:
+                  FontWeight.bold,
             ),
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(
+            height: 12,
+          ),
 
           SelectableText(
-            provider.decryptedText!,
-            style: const TextStyle(
-              color: AppColors.text,
+            provider
+                .decryptedText!,
+            style:
+                const TextStyle(
+              color:
+                  AppColors.text,
               fontSize: 16,
               height: 1.5,
             ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 16,
+          ),
 
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
               OutlinedButton(
-                onPressed: provider.isBusy
-                    ? null
-                    : () {
-                        widget.controller
-                            .copyDecryptedText();
-                      },
-                child: const Text('COPY'),
+                onPressed:
+                    provider.isBusy
+                        ? null
+                        : () {
+                            widget
+                                .controller
+                                .copyDecryptedText();
+                          },
+                child:
+                    const Text(
+                  'COPY',
+                ),
               ),
 
               OutlinedButton(
-                onPressed: provider.isBusy
-                    ? null
-                    : () async {
-                        await widget.controller
-                            .saveDecryptedText();
-                      },
-                child: const Text('SAVE'),
+                onPressed:
+                    provider.isBusy
+                        ? null
+                        : () async {
+                            await widget
+                                .controller
+                                .saveDecryptedText();
+                          },
+                child:
+                    const Text(
+                  'SAVE',
+                ),
               ),
 
               OutlinedButton(
-                onPressed: provider.isBusy
-                    ? null
-                    : () async {
-                        await widget.controller
-                            .shareDecryptedText();
-                      },
-                child: const Text('SHARE'),
+                onPressed:
+                    provider.isBusy
+                        ? null
+                        : () async {
+                            await widget
+                                .controller
+                                .shareDecryptedText();
+                          },
+                child:
+                    const Text(
+                  'SHARE',
+                ),
               ),
             ],
           ),
@@ -408,20 +569,49 @@ class _DecryptScreenState extends State<DecryptScreen> {
     String message,
   ) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.errorBackground,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.error,
+      width:
+          double.infinity,
+      padding:
+          const EdgeInsets.all(14),
+      decoration:
+          BoxDecoration(
+        color:
+            AppColors.errorBackground,
+        borderRadius:
+            BorderRadius.circular(
+          12,
+        ),
+        border:
+            Border.all(
+          color:
+              AppColors.error,
         ),
       ),
-      child: Text(
-        message,
-        style: const TextStyle(
-          color: AppColors.error,
-        ),
+      child: Row(
+        crossAxisAlignment:
+            CrossAxisAlignment
+                .start,
+        children: [
+          const Icon(
+            Icons
+                .error_outline_rounded,
+            color:
+                AppColors.error,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Text(
+              message,
+              style:
+                  const TextStyle(
+                color:
+                    AppColors.text,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

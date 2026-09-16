@@ -97,9 +97,10 @@ class HideController {
     provider.setSaving();
 
     try {
-      final path = await fileStorage.saveBytesFile(
+      final path = await fileStorage.saveBytesFileWithPicker(
         fileName: _buildOutputFileName(),
         bytes: bytes,
+        mimeType: 'image/png',
       );
 
       provider.setSaved(path);

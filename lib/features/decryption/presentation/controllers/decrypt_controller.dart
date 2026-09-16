@@ -2,6 +2,10 @@ import 'package:cryptography/cryptography.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../core/security/advanced/codec/advanced_cipher_vault_payload_codec.dart';
+import '../../../../core/security/advanced/services/aes_ml_kem_encryption_service.dart';
+import '../../../../core/security/advanced/services/advanced_encryption_service.dart';
+import '../../../../core/security/advanced/services/chacha20_ml_kem_encryption_service.dart';
 import '../../../../core/security/codec/cipher_vault_payload_codec.dart';
 import '../../../../core/security/steganography/services/steganography_service.dart';
 import '../../../../core/sharing/share_service.dart';
@@ -32,23 +36,27 @@ class DecryptController {
     provider.setSelectingImage();
 
     try {
-      final result = await FilePicker.platform.pickFiles(
+      final result =
+          await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['png'],
         allowMultiple: false,
         withData: true,
       );
 
-      if (result == null || result.files.isEmpty) {
+      if (result == null ||
+          result.files.isEmpty) {
         provider.restoreSuccess();
         return;
       }
 
-      final file = result.files.single;
+      final file =
+          result.files.single;
 
       final bytes = file.bytes;
 
-      if (bytes == null || bytes.isEmpty) {
+      if (bytes == null ||
+          bytes.isEmpty) {
         provider.setError(
           'No fue posible leer la imagen seleccionada.',
         );
@@ -67,7 +75,8 @@ class DecryptController {
   }
 
   Future<void> extractFromImage() async {
-    final imageBytes = provider.selectedImageBytes;
+    final imageBytes =
+        provider.selectedImageBytes;
 
     if (imageBytes == null) {
       provider.setError(
@@ -79,15 +88,20 @@ class DecryptController {
     provider.setExtracting();
 
     try {
-      final payload = await steganographyService.extract(
+      final payload =
+          await steganographyService.extract(
         imageBytes: imageBytes,
       );
 
-      CipherVaultPayloadCodec.decode(payload);
+      _validatePayloadFormat(
+        payload,
+      );
 
       provider.setPayload(payload);
     } on FormatException catch (error) {
-      provider.setError(error.message);
+      provider.setError(
+        error.message,
+      );
     } catch (_) {
       provider.setError(
         'No fue posible extraer el payload de la imagen.',
@@ -98,11 +112,13 @@ class DecryptController {
   Future<void> decryptPayload({
     required String password,
   }) async {
-    final payload = provider.payload;
+    final payload =
+        provider.payload;
 
-    if (payload == null || payload.trim().isEmpty) {
+    if (payload == null ||
+        payload.trim().isEmpty) {
       provider.setError(
-        'Primero selecciona una imagen protegida.',
+        'Primero selecciona una imagen protegida o introduce un payload.',
       );
       return;
     }
@@ -116,20 +132,28 @@ class DecryptController {
 
     provider.setDecrypting();
 
-    try {
-      final encryptedData =
-          CipherVaultPayloadCodec.decode(
-        payload.trim(),
-      );
+    final cleanPayload =
+        payload.trim();
 
-      final decrypted = await decryptText(
-        encryptedData: encryptedData,
+    try {
+      if (_isAdvancedPayload(
+        cleanPayload,
+      )) {
+        await _decryptAdvancedPayload(
+          payload: cleanPayload,
+          password: password,
+        );
+        return;
+      }
+
+      await _decryptStandardPayload(
+        payload: cleanPayload,
         password: password,
       );
-
-      provider.setSuccess(decrypted);
     } on FormatException catch (error) {
-      provider.setError(error.message);
+      provider.setError(
+        error.message,
+      );
     } on SecretBoxAuthenticationError {
       provider.setError(
         'La contraseña es incorrecta o los datos fueron modificados.',
@@ -141,11 +165,75 @@ class DecryptController {
     }
   }
 
+  Future<void> _decryptStandardPayload({
+    required String payload,
+    required String password,
+  }) async {
+    final encryptedData =
+        CipherVaultPayloadCodec.decode(
+      payload,
+    );
+
+    final decrypted =
+        await decryptText(
+      encryptedData: encryptedData,
+      password: password,
+    );
+
+    provider.setSuccess(
+      decrypted,
+    );
+  }
+
+  Future<void> _decryptAdvancedPayload({
+    required String payload,
+    required String password,
+  }) async {
+    final encryptedData =
+        AdvancedCipherVaultPayloadCodec
+            .decode(
+      payload,
+    );
+
+    final AdvancedEncryptionService
+        service;
+
+    switch (
+        encryptedData.symmetricAlgorithm) {
+      case 'aes-256-gcm':
+        service =
+            AesMlKemEncryptionService();
+        break;
+
+      case 'chacha20-poly1305':
+        service =
+            Chacha20MlKemEncryptionService();
+        break;
+
+      default:
+        throw FormatException(
+          'Algoritmo de cifrado avanzado no soportado: '
+          '${encryptedData.symmetricAlgorithm}',
+        );
+    }
+
+    final decrypted =
+        await service.decrypt(
+      encryptedData: encryptedData,
+      password: password,
+    );
+
+    provider.setSuccess(
+      decrypted,
+    );
+  }
+
   Future<void> decryptPayloadText({
     required String payload,
     required String password,
   }) async {
-    final cleanPayload = payload.trim();
+    final cleanPayload =
+        payload.trim();
 
     if (cleanPayload.isEmpty) {
       provider.setError(
@@ -161,7 +249,20 @@ class DecryptController {
       return;
     }
 
-    provider.setPayload(cleanPayload);
+    try {
+      _validatePayloadFormat(
+        cleanPayload,
+      );
+    } on FormatException catch (error) {
+      provider.setError(
+        error.message,
+      );
+      return;
+    }
+
+    provider.setPayload(
+      cleanPayload,
+    );
 
     await decryptPayload(
       password: password,
@@ -169,7 +270,8 @@ class DecryptController {
   }
 
   Future<void> copyDecryptedText() async {
-    final text = provider.decryptedText;
+    final text =
+        provider.decryptedText;
 
     if (text == null) {
       return;
@@ -195,19 +297,21 @@ class DecryptController {
   Future<String?> saveDecryptedText() async {
     final text = provider.decryptedText;
 
-    if (text == null) {
+    if (text == null || text.isEmpty) {
       return null;
     }
 
     provider.setSaving();
 
     try {
-      final path = await fileStorage.saveTextFile(
+      final path =
+          await fileStorage.saveTextFileWithPicker(
         fileName: 'cipher_vault_decrypted.txt',
         content: text,
+        mimeType: 'text/plain',
       );
 
-      provider.setSaved(path);
+      provider.restoreSuccess();
 
       return path;
     } catch (_) {
@@ -220,7 +324,8 @@ class DecryptController {
   }
 
   Future<bool> shareDecryptedText() async {
-    final text = provider.decryptedText;
+    final text =
+        provider.decryptedText;
 
     if (text == null) {
       return false;
@@ -231,7 +336,8 @@ class DecryptController {
     try {
       await shareService.shareText(
         text: text,
-        subject: 'CipherVault decrypted message',
+        subject:
+            'CipherVault decrypted message',
       );
 
       provider.restoreSuccess();
@@ -252,5 +358,43 @@ class DecryptController {
 
   void reset() {
     provider.reset();
+  }
+
+  bool _isAdvancedPayload(
+    String payload,
+  ) {
+    return payload.startsWith(
+      'CVLT2.',
+    );
+  }
+
+  void _validatePayloadFormat(
+    String payload,
+  ) {
+    final cleanPayload =
+        payload.trim();
+
+    if (cleanPayload.startsWith(
+      'CVLT1.',
+    )) {
+      CipherVaultPayloadCodec.decode(
+        cleanPayload,
+      );
+      return;
+    }
+
+    if (cleanPayload.startsWith(
+      'CVLT2.',
+    )) {
+      AdvancedCipherVaultPayloadCodec
+          .decode(
+        cleanPayload,
+      );
+      return;
+    }
+
+    throw const FormatException(
+      'El payload no pertenece a un formato compatible de CipherVault.',
+    );
   }
 }

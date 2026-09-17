@@ -131,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                                         child:
                                             _SecondaryButton(
                                           label:
-                                              'Descifrar',
+                                              'Descifrar\ninformación',
                                           onPressed: () {
                                             Navigator
                                                 .pushNamed(

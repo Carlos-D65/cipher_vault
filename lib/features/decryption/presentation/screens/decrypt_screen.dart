@@ -66,7 +66,7 @@ class _DecryptScreenState
               AppColors.background,
           elevation: 0,
           title: const Text(
-            'Decrypt',
+            'Descifrar',
             style: TextStyle(
               color: AppColors.text,
               fontWeight:
@@ -120,7 +120,7 @@ class _DecryptScreenState
                                   .stretch,
                           children: [
                             const Text(
-                              'DECRYPT MESSAGE',
+                              'DESCIFRAR MENSAJE',
                               style:
                                   TextStyle(
                                 color:
@@ -138,7 +138,7 @@ class _DecryptScreenState
                             ),
 
                             const Text(
-                              'Decrypt standard CVLT1 or advanced CVLT2 payloads.',
+                              'Descifra mensajes estándar CVLT1 o avanzados CVLT2.',
                               style:
                                   TextStyle(
                                 color:
@@ -446,7 +446,7 @@ class _DecryptScreenState
                     ),
                   )
                 : const Text(
-                    'DECRYPT',
+                    'DESCIFRAR',
                   ),
       ),
     );

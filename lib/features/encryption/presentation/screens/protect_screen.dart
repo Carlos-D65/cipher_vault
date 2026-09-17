@@ -106,7 +106,7 @@ class _ProtectScreenState
           .showSnackBar(
         const SnackBar(
           content: Text(
-            'Encrypted payload saved.',
+            'Guardar cifrardo payload.',
           ),
         ),
       );
@@ -234,7 +234,7 @@ class _ProtectScreenState
                                   .stretch,
                           children: [
                             const Text(
-                              'ENCRYPT MESSAGE',
+                              'CIFRAR MENSAJE',
                               style:
                                   TextStyle(
                                 color:
@@ -253,8 +253,8 @@ class _ProtectScreenState
 
                             Text(
                               _advancedMode
-                                  ? 'Use hybrid post-quantum protection with ML-KEM.'
-                                  : 'Protect your information with strong encryption.',
+                                  ? 'Usa la protección híbrida post-cuántica con ML-KEM.'
+                                  : 'Protege tu información con cifrado fuerte.',
                               style:
                                   const TextStyle(
                                 color:
@@ -384,7 +384,7 @@ class _ProtectScreenState
           CrossAxisAlignment.start,
       children: [
         const Text(
-          'MESSAGE',
+          'MENSAJE',
           style: TextStyle(
             color: AppColors.muted,
             fontSize: 11,
@@ -414,7 +414,7 @@ class _ProtectScreenState
           decoration:
               InputDecoration(
             hintText:
-                'Write the message you want to protect...',
+                'ESCRIBE EL MENSAJE QUE QUIERES PROTEGER...',
             hintStyle:
                 const TextStyle(
               color:
@@ -473,7 +473,7 @@ class _ProtectScreenState
           CrossAxisAlignment.start,
       children: [
         const Text(
-          'PASSWORD',
+          'CONTRASEÑA',
           style: TextStyle(
             color: AppColors.muted,
             fontSize: 11,
@@ -497,7 +497,7 @@ class _ProtectScreenState
           decoration:
               InputDecoration(
             hintText:
-                'Enter password',
+                'Escribe la contraseña',
             hintStyle:
                 const TextStyle(
               color:
@@ -572,8 +572,8 @@ class _ProtectScreenState
         ),
         label: Text(
           _advancedMode
-              ? 'STANDARD ENCRYPTION'
-              : 'ADVANCED',
+              ? 'CIFRADO ESTÁNDAR'
+              : 'CIFRADO AVANZADO',
           style:
               const TextStyle(
             fontWeight:
@@ -637,7 +637,7 @@ class _ProtectScreenState
                 width: 8,
               ),
               Text(
-                'ADVANCED PROTECTION',
+                'PROTECCIÓN AVANZADA',
                 style:
                     TextStyle(
                   color:
@@ -657,7 +657,7 @@ class _ProtectScreenState
           ),
 
           const Text(
-            'Hybrid encryption using ML-KEM-768 with an authenticated symmetric cipher.',
+            'Cifrado híbrido que utiliza ML-KEM-768 con un cifrado simétrico autenticado.',
             style: TextStyle(
               color:
                   AppColors.muted,
@@ -678,7 +678,7 @@ class _ProtectScreenState
             title:
                 'AES-256-GCM + ML-KEM',
             subtitle:
-                'CVLT2 hybrid encryption',
+                'CVLT2 encriptación híbrida',
             icon:
                 Icons.shield_rounded,
           ),
@@ -695,7 +695,7 @@ class _ProtectScreenState
             title:
                 'ChaCha20-Poly1305 + ML-KEM',
             subtitle:
-                'CVLT2 hybrid encryption',
+                'CVLT2 encriptación híbrida',
             icon:
                 Icons.security_rounded,
           ),
@@ -849,8 +849,8 @@ class _ProtectScreenState
                   )
                 : Text(
                     _advancedMode
-                        ? 'ENCRYPT ADVANCED'
-                        : 'ENCRYPT',
+                        ? 'CIFRAR AVANZADO'
+                        : 'CIFRAR',
                     style:
                         const TextStyle(
                       fontWeight:

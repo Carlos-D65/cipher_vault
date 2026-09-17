@@ -58,7 +58,7 @@ class HomeHeader extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         const Text(
-          'Protege lo que importa.',
+          'Protege tu información.',
           style: TextStyle(
             color: AppColors.text,
             fontSize: 21,

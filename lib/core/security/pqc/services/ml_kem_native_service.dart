@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:mlkem_native/mlkem512.dart';
-import 'package:mlkem_native/mlkem768.dart';
-import 'package:mlkem_native/mlkem1024.dart';
+import 'package:mlkem_native/mlkem_native.dart';
 
 import '../models/ml_kem_algorithm.dart';
 import '../models/ml_kem_encapsulation.dart';

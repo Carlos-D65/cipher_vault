@@ -6,6 +6,7 @@ import '../../features/steganography/presentation/screens/hide_screen.dart';
 import '../../features/decryption/decryption_dependencies.dart';
 import '../../features/decryption/presentation/screens/decrypt_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/splash/presentation/screens/splash_screen.dart';
 
 class AppRouter {
   AppRouter._();
@@ -14,10 +15,16 @@ class AppRouter {
   static const String protect = '/protect';
   static const String decrypt = '/decrypt';
   static const String hide = '/hide';
+  static const String splash = '/splash';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     
     switch (settings.name) {
+
+      case AppRouter.splash:
+        return MaterialPageRoute(
+          builder: (_) => const SplashScreen(),
+        );
 
       case AppRouter.home:
         return MaterialPageRoute(

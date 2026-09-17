@@ -19,7 +19,11 @@ class LocalFileStorageService implements FileStorageService {
 
     final file = File('${directory.path}/$fileName');
 
-    await file.writeAsString(content, encoding: utf8, flush: true);
+    await file.writeAsString(
+      content,
+      encoding: utf8,
+      flush: true,
+    );
 
     return file.path;
   }
@@ -33,7 +37,10 @@ class LocalFileStorageService implements FileStorageService {
 
     final file = File('${directory.path}/$fileName');
 
-    await file.writeAsBytes(bytes, flush: true);
+    await file.writeAsBytes(
+      bytes,
+      flush: true,
+    );
 
     return file.path;
   }
@@ -44,8 +51,11 @@ class LocalFileStorageService implements FileStorageService {
     required String content,
     required String mimeType,
   }) async {
-    final bytes = Uint8List.fromList(utf8.encode(content));
-    return await saveBytesFileWithPicker(
+    final bytes = Uint8List.fromList(
+      utf8.encode(content),
+    );
+
+    return saveBytesFileWithPicker(
       fileName: fileName,
       bytes: bytes,
       mimeType: mimeType,
@@ -58,15 +68,32 @@ class LocalFileStorageService implements FileStorageService {
     required Uint8List bytes,
     required String mimeType,
   }) async {
-    final url = await FilePicker.platform.saveFile(
+    final extension = _getExtension(fileName);
+
+    final path = await FilePicker.platform.saveFile(
       dialogTitle: 'Guardar archivo',
       fileName: fileName,
+      bytes: bytes,
       type: FileType.custom,
-      allowedExtensions: [mimeType],
+      allowedExtensions: [extension],
     );
-    if (url == null) {
-      throw Exception('No se seleccionó ninguna ubicación para guardar el archivo.');
+
+    if (path == null) {
+      throw Exception(
+        'No se seleccionó ninguna ubicación para guardar el archivo.',
+      );
     }
-    return url.toString();
+
+    return path;
+  }
+
+  String _getExtension(String fileName) {
+    final index = fileName.lastIndexOf('.');
+
+    if (index == -1 || index == fileName.length - 1) {
+      return '';
+    }
+
+    return fileName.substring(index + 1);
   }
 }

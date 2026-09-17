@@ -12,7 +12,7 @@ class CipherVaultApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CipherVault',
       theme: AppTheme.dark,
-      initialRoute: AppRouter.home,
+      initialRoute: AppRouter.splash,
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }

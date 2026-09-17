@@ -98,7 +98,7 @@ class _HideScreenState extends State<HideScreen> {
           backgroundColor: AppColors.background,
           elevation: 0,
           title: const Text(
-            'Hide',
+            'Ocultar',
             style: TextStyle(
               color: AppColors.text,
               fontWeight: FontWeight.w700,
@@ -124,7 +124,7 @@ class _HideScreenState extends State<HideScreen> {
                 ),
                 children: [
                   const Text(
-                    'HIDE ENCRYPTED DATA',
+                    'OCULTAR DATOS CIFRADOS',
                     style: TextStyle(
                       color: AppColors.cyan,
                       fontSize: 12,
@@ -134,7 +134,7 @@ class _HideScreenState extends State<HideScreen> {
                   ),
                   const SizedBox(height: 8),
                   const Text(
-                    'Hide an encrypted CipherVault payload inside a PNG image.',
+                    'Oculta un payload cifrado de CipherVault dentro de una imagen PNG.',
                     style: TextStyle(
                       color: AppColors.muted,
                       fontSize: 14,
@@ -221,7 +221,7 @@ class _HideScreenState extends State<HideScreen> {
                       ),
                       SizedBox(height: 12),
                       Text(
-                        'SELECT PNG',
+                        'SELECCIONAR PNG',
                         style: TextStyle(
                           color: AppColors.text,
                           fontWeight: FontWeight.w700,
@@ -230,7 +230,7 @@ class _HideScreenState extends State<HideScreen> {
                       ),
                       SizedBox(height: 6),
                       Text(
-                        'Only PNG images are supported.',
+                        'SOLO SE ACEPTAN IMÁGENES PNG',
                         style: TextStyle(
                           color: AppColors.muted,
                           fontSize: 12,
@@ -263,7 +263,7 @@ class _HideScreenState extends State<HideScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'ENCRYPTED PAYLOAD',
+          'RESULTADO PAYLOAD',
           style: TextStyle(
             color: AppColors.muted,
             fontSize: 11,
@@ -339,7 +339,7 @@ class _HideScreenState extends State<HideScreen> {
                 Icons.visibility_off_outlined,
               ),
         label: Text(
-          processing ? 'HIDING...' : 'HIDE PAYLOAD',
+          processing ? 'HIDING...' : 'OCULTA PAYLOAD',
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.cyan,
@@ -389,7 +389,7 @@ class _HideScreenState extends State<HideScreen> {
               SizedBox(width: 9),
               Expanded(
                 child: Text(
-                  'PAYLOAD HIDDEN SUCCESSFULLY',
+                  'PAYLOAD EXITOSO',
                   style: TextStyle(
                     color: AppColors.green,
                     fontSize: 12,
@@ -431,7 +431,7 @@ class _HideScreenState extends State<HideScreen> {
                           size: 18,
                         ),
                   label: Text(
-                    saving ? 'SAVING...' : 'SAVE',
+                    saving ? 'SAVING...' : 'GUARDAR',
                   ),
                 ),
               ),

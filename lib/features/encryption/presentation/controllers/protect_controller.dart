@@ -186,7 +186,9 @@ class ProtectController {
       provider.restoreSuccessState();
 
       return path;
-    } catch (_) {
+    } catch (e, stackTrace) {
+      print('Error saving payload: $e');
+      print(stackTrace);
       provider.setError(
         'No fue posible guardar el payload.',
       );

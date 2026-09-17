@@ -47,7 +47,7 @@ class EncryptedResultCard extends StatelessWidget {
               SizedBox(width: 9),
               Expanded(
                 child: Text(
-                  'ENCRYPTION COMPLETE',
+                  'CIFRADO COMPLETO',
                   style: TextStyle(
                     color: AppColors.green,
                     fontSize: 12,
@@ -98,7 +98,7 @@ class EncryptedResultCard extends StatelessWidget {
                     Icons.copy_rounded,
                     size: 18,
                   ),
-                  label: const Text('COPY'),
+                  label: const Text('COPIAR'),
                 ),
               ),
               const SizedBox(width: 10),
@@ -118,7 +118,7 @@ class EncryptedResultCard extends StatelessWidget {
                           size: 18,
                         ),
                   label: Text(
-                    isSaving ? 'SAVING...' : 'SAVE',
+                    isSaving ? 'SAVING...' : 'GUARDAR',
                   ),
                 ),
               ),
@@ -157,7 +157,7 @@ class EncryptedResultCard extends StatelessWidget {
                     Icons.image_outlined,
                     size: 18,
                   ),
-                  label: const Text('HIDE'),
+                  label: const Text('OCULTAR'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.cyan,
                     foregroundColor: Colors.black,

@@ -10,6 +10,7 @@ enum DecryptStatus {
   saving,
   sharing,
   error,
+  selectingFile,
 }
 
 class DecryptProvider extends ChangeNotifier {
@@ -18,6 +19,8 @@ class DecryptProvider extends ChangeNotifier {
   Uint8List? _selectedImageBytes;
 
   String? _selectedFileName;
+
+  String? _selectedPayloadFileName;
 
   String? _payload;
 
@@ -35,6 +38,9 @@ class DecryptProvider extends ChangeNotifier {
   String? get selectedFileName =>
       _selectedFileName;
 
+  String? get selectedPayloadFileName =>
+    _selectedPayloadFileName;
+
   String? get payload => _payload;
 
   String? get decryptedText =>
@@ -49,6 +55,8 @@ class DecryptProvider extends ChangeNotifier {
   bool get isBusy {
     return _status ==
             DecryptStatus.selectingImage ||
+        _status == 
+            DecryptStatus.selectingFile ||
         _status ==
             DecryptStatus.extracting ||
         _status ==
@@ -75,12 +83,21 @@ class DecryptProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setSelectingFile() {
+    _status = DecryptStatus.selectingFile;
+    _errorMessage = null;
+
+    notifyListeners();
+  }
+
   void setImage({
     required Uint8List bytes,
     required String fileName,
   }) {
     _selectedImageBytes = bytes;
     _selectedFileName = fileName;
+
+    _selectedPayloadFileName = null;
 
     _payload = null;
     _decryptedText = null;
@@ -100,9 +117,20 @@ class DecryptProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPayload(String payload) {
+  void setPayload(
+    String payload, {
+    String? fileName,
+  }) {
     _payload = payload;
+
+    if (fileName != null) {
+      _selectedPayloadFileName = fileName;
+    }
+
+    _decryptedText = null;
+    _savedPath = null;
     _errorMessage = null;
+    _status = DecryptStatus.idle;
 
     notifyListeners();
   }
@@ -181,6 +209,7 @@ class DecryptProvider extends ChangeNotifier {
 
     _selectedImageBytes = null;
     _selectedFileName = null;
+    _selectedPayloadFileName = null;
 
     _payload = null;
     _decryptedText = null;

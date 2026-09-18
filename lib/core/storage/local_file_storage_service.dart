@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'file_storage_service.dart';
+import 'picked_data.dart';
 
 class LocalFileStorageService implements FileStorageService {
   const LocalFileStorageService();
@@ -95,5 +96,36 @@ class LocalFileStorageService implements FileStorageService {
     }
 
     return fileName.substring(index + 1);
+  }
+  @override
+  Future<PickedFileData?> pickFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['cvlt'],
+      withData: true,
+    );
+
+    if (result == null || result.files.isEmpty) {
+      return null;
+    }
+
+    final file = result.files.single;
+
+    Uint8List? bytes = file.bytes;
+
+    if (bytes == null && file.path != null) {
+      bytes = await File(file.path!).readAsBytes();
+    }
+
+    if (bytes == null) {
+      throw Exception(
+        'No fue posible leer el archivo seleccionado.',
+      );
+    }
+
+    return PickedFileData(
+      fileName: file.name,
+      bytes: bytes,
+    );
   }
 }

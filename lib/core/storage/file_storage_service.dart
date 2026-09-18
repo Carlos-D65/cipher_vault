@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'picked_data.dart';
 
 abstract interface class FileStorageService {
   Future<String> saveTextFile({
@@ -22,4 +23,6 @@ abstract interface class FileStorageService {
     required Uint8List bytes,
     required String mimeType,
   });
+
+  Future<PickedFileData?> pickFile();
 }

@@ -159,6 +159,12 @@ class _DecryptScreenState
                               height: 16,
                             ),
 
+                            _buildPayloadFileSelector(provider),
+
+                            const SizedBox(
+                              height: 16,
+                            ),
+
                             _buildPayloadField(
                               provider,
                             ),
@@ -353,6 +359,44 @@ class _DecryptScreenState
                   },
             child: const Text(
               'EXTRAER PAYLOAD',
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+  Widget _buildPayloadFileSelector(
+    DecryptProvider provider,
+  ) {
+    return Column(
+      crossAxisAlignment:
+          CrossAxisAlignment.stretch,
+      children: [
+        OutlinedButton.icon(
+          onPressed: provider.isBusy
+              ? null
+              : () async {
+                  await widget.controller
+                      .pickPayloadFile();
+                },
+          icon: const Icon(
+            Icons.folder_open_rounded,
+          ),
+          label: const Text(
+            'CARGAR ARCHIVO CVLT',
+          ),
+        ),
+
+        if (provider.selectedPayloadFileName !=
+            null) ...[
+          const SizedBox(height: 8),
+          Text(
+            provider.selectedPayloadFileName!,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            style: const TextStyle(
+              color: AppColors.muted,
             ),
           ),
         ],
